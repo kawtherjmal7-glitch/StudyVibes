@@ -1,0 +1,245 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Pacifico&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh;
+
+    font-family: "Poppins", sans-serif;
+
+    color: #714961;
+
+    overflow-x: hidden;
+
+    background:
+        radial-gradient(circle at 5% 10%, #ffcce5, transparent 25%),
+        radial-gradient(circle at 95% 15%, #e1d0ff, transparent 28%),
+        radial-gradient(circle at 50% 100%, #ffe4f3, transparent 30%),
+        linear-gradient(135deg, #fff8fc, #f6efff);
+}
+
+/* ================= HEADER ================= */
+
+header {
+    padding: 25px 7%;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-family: "Pacifico", cursive;
+
+    font-size: 28px;
+
+    color: #c965a3;
+
+    text-decoration: none;
+}
+
+.back {
+    padding: 10px 18px;
+
+    border-radius: 50px;
+
+    text-decoration: none;
+
+    color: #9c6387;
+
+    background: rgba(255,255,255,0.7);
+
+    box-shadow: 0 8px 25px rgba(170,90,140,0.10);
+
+    transition: 0.3s;
+}
+
+.back:hover {
+    transform: translateY(-3px);
+    background: white;
+}
+
+/* ================= MAIN ================= */
+
+.space-main {
+    position: relative;
+
+    text-align: center;
+
+    padding: 60px 20px 100px;
+}
+
+.page-icon {
+    width: 105px;
+    height: 105px;
+
+    margin: auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 35px;
+
+    background: rgba(255,255,255,0.75);
+
+    font-size: 55px;
+
+    box-shadow:
+        0 20px 50px rgba(200,100,165,0.20);
+
+    animation: floating 4s ease-in-out infinite;
+}
+
+.space-main h1 {
+    margin-top: 25px;
+
+    font-size: clamp(42px, 7vw, 65px);
+
+    background: linear-gradient(90deg, #ce67a5, #9b75d0);
+
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+.space-main > p {
+    margin-top: 12px;
+
+    color: #927386;
+}
+
+/* ================= SECTION CARDS ================= */
+
+.section-grid {
+    width: 100%;
+    max-width: 950px;
+
+    margin: 60px auto 0;
+
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 25px;
+}
+
+.study-section {
+    position: relative;
+
+    padding: 40px 25px;
+
+    min-height: 220px;
+
+    border-radius: 32px;
+
+    background: rgba(255,255,255,0.70);
+
+    border: 1px solid rgba(255,255,255,0.9);
+
+    backdrop-filter: blur(15px);
+
+    box-shadow:
+        0 20px 50px rgba(175,100,155,0.10);
+
+    font-size: 42px;
+
+    overflow: hidden;
+
+    cursor: pointer;
+
+    transition: 0.35s;
+}
+
+.study-section::after {
+    content: "✦";
+
+    position: absolute;
+
+    right: 25px;
+    top: 20px;
+
+    color: #e3a2c7;
+
+    font-size: 25px;
+}
+
+.study-section:hover {
+    transform: translateY(-10px);
+
+    box-shadow:
+        0 30px 65px rgba(175,100,155,0.20);
+}
+
+.study-section h2 {
+    margin-top: 15px;
+
+    color: #754c68;
+
+    font-size: 22px;
+}
+
+.study-section p {
+    margin-top: 8px;
+
+    color: #927c8d;
+
+    font-size: 13px;
+
+    line-height: 1.7;
+}
+
+/* Different cute touches */
+
+.study-section:nth-child(1) {
+    background: linear-gradient(145deg, #fff, #fff0f8);
+}
+
+.study-section:nth-child(2) {
+    background: linear-gradient(145deg, #fff, #f1ebff);
+}
+
+.study-section:nth-child(3) {
+    background: linear-gradient(145deg, #fff, #eaf8ff);
+}
+
+.study-section:nth-child(4) {
+    background: linear-gradient(145deg, #fff, #fff5e9);
+}
+
+/* ================= ANIMATION ================= */
+
+@keyframes floating {
+
+    0%, 100% {
+        transform: translateY(0) rotate(0deg);
+    }
+
+    50% {
+        transform: translateY(-10px) rotate(2deg);
+    }
+}
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 700px) {
+
+    header {
+        padding: 20px;
+    }
+
+    .section-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .study-section {
+        min-height: 190px;
+    }
+}

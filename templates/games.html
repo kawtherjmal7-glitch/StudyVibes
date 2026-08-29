@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>StudyVibe Quiz 🎮</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #f8efff,
+                    #eaf4ff
+                );
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            padding: 20px;
+        }
+
+        .quiz-container {
+            width: 100%;
+            max-width: 750px;
+
+            background: white;
+
+            padding: 30px;
+
+            border-radius: 25px;
+
+            box-shadow:
+                0 10px 35px
+                rgba(0, 0, 0, 0.12);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            margin: 10px 0 5px;
+        }
+
+        .header p {
+            color: #777;
+        }
+
+        .back {
+            text-decoration: none;
+            color: #555;
+
+            display: inline-block;
+
+            margin-bottom: 10px;
+        }
+
+        .quiz-info {
+            display: flex;
+            justify-content: space-between;
+
+            margin-bottom: 12px;
+
+            font-weight: bold;
+        }
+
+        .progress-container {
+            width: 100%;
+            height: 10px;
+
+            background: #eeeeee;
+
+            border-radius: 20px;
+
+            overflow: hidden;
+
+            margin-bottom: 25px;
+        }
+
+        #progress {
+            width: 0%;
+            height: 100%;
+
+            background: #8b5cf6;
+
+            transition: 0.3s;
+        }
+
+        .question-card {
+            background: #fafafa;
+
+            padding: 25px;
+
+            border-radius: 20px;
+
+            margin-bottom: 20px;
+        }
+
+        #question {
+            line-height: 1.5;
+        }
+
+        .answer {
+            display: block;
+
+            width: 100%;
+
+            padding: 15px;
+
+            margin: 10px 0;
+
+            background: white;
+
+            border: 2px solid #dddddd;
+
+            border-radius: 12px;
+
+            cursor: pointer;
+
+            text-align: left;
+
+            font-size: 16px;
+
+            transition: 0.2s;
+        }
+
+        .answer:hover {
+            border-color: #8b5cf6;
+            transform: translateY(-2px);
+        }
+
+        .correct {
+            background: #d9fbe5 !important;
+            border-color: #28a745 !important;
+        }
+
+        .wrong {
+            background: #ffe0e0 !important;
+            border-color: #dc3545 !important;
+        }
+
+        #nextButton,
+        .restart {
+            width: 100%;
+
+            padding: 15px;
+
+            border: none;
+
+            border-radius: 12px;
+
+            background: #8b5cf6;
+
+            color: white;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+        #nextButton:hover,
+        .restart:hover {
+            opacity: 0.9;
+        }
+
+        #result {
+            text-align: center;
+        }
+
+        .trophy {
+            font-size: 70px;
+        }
+
+        #result h2 {
+            font-size: 30px;
+        }
+
+        .home {
+            display: block;
+
+            text-decoration: none;
+
+            text-align: center;
+
+            margin-top: 15px;
+
+            padding: 14px;
+
+            background: #eeeeee;
+
+            color: #333;
+
+            border-radius: 12px;
+        }
+
+        @media (max-width: 600px) {
+
+            .quiz-container {
+                padding: 20px;
+            }
+
+            .question-card {
+                padding: 18px;
+            }
+
+            .answer {
+                font-size: 14px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="quiz-container">
+
+
+    <!-- =========================
+         HEADER
+    ========================== -->
+
+    <div class="header">
+
+        <a href="/" class="back">
+            ← Home
+        </a>
+
+        <h1>
+            🎮 StudyVibe Quiz
+        </h1>
+
+        <p>
+            3ème Informatique 🧠
+        </p>
+
+    </div>
+
+
+    <!-- =========================
+         QUIZ
+    ========================== -->
+
+    <div id="quiz">
+
+
+        <div class="quiz-info">
+
+            <span id="questionNumber">
+                Question 1 / 20
+            </span>
+
+            <span id="score">
+                Score: 0
+            </span>
+
+        </div>
+
+
+        <div class="progress-container">
+
+            <div id="progress"></div>
+
+        </div>
+
+
+        <div class="question-card">
+
+            <h2 id="question">
+                Question
+            </h2>
+
+            <div id="answers"></div>
+
+        </div>
+
+
+        <button
+            id="nextButton"
+            onclick="nextQuestion()"
+            style="display:none;">
+
+            Next ➜
+
+        </button>
+
+
+    </div>
+
+
+    <!-- =========================
+         RESULT
+    ========================== -->
+
+    <div
+        id="result"
+        style="display:none;">
+
+        <div class="trophy">
+            🏆
+        </div>
+
+        <h2>
+            Quiz Finished!
+        </h2>
+
+        <h3 id="finalScore"></h3>
+
+        <p id="finalMessage"></p>
+
+
+        <button
+            class="restart"
+            onclick="restartQuiz()">
+
+            🔄 Play Again
+
+        </button>
+
+
+        <a href="/" class="home">
+            🏠 Back Home
+        </a>
+
+    </div>
+
+
+</div>
+
+
+<script>
+
+
+// =================================
+// 20 QUESTIONS
+// =================================
+
+const questions = [
+
+
+    // ==============================
+    // PROGRAMMATION
+    // ==============================
+
+    {
+        question:
+        "Quel mot-clé permet de définir une fonction en Python ?",
+
+        answers: [
+            "function",
+            "def",
+            "func",
+            "define"
+        ],
+
+        correct: 1
+    },
+
+
+    {
+        question:
+        "Quel type de donnée contient True ou False ?",
+
+        answers: [
+            "String",
+            "Integer",
+            "Boolean",
+            "Float"
+        ],
+
+        correct: 2
+    },
+
+
+    {
+        question:
+        "Quel symbole est utilisé pour écrire un commentaire en Python ?",
+
+        answers: [
+            "//",
+            "#",
+            "/* */",
+            "<!-- -->"
+        ],
+
+        correct: 1
+    },
+
+
+    {
+        question:
+        "Que donne 5 + 3 * 2 en Python ?",
+
+        answers: [
+            "16",
+            "11",
+            "13",
+            "10"
+        ],
+
+        correct: 1
+    },
+
+
+    {
+        question:
+        "Quelle fonction permet d'afficher une valeur en Python ?",
+
+        answers: [
+            "show()",
+            "display()",
+            "print()",
+            "write()"
+        ],
+
+        correct: 2
+    },
+
+
+    // ==============================
+    // STI
+    // ==============================
+
+    {
+        question:
+        "Que signifie CPU ?",
+
+        answers: [
+            "Central Processing Unit",
+            "Computer Personal Unit",
+            "Central Program Utility",
+            "Computer Processing User"
+        ],
+
+        correct: 0
+    },
+
+
+    {
+        question:
+        "Que signifie RAM ?",
+
+        answers: [
+            "Random Access Memory",
+            "Read Access Machine",
+            "Rapid Application Memory",
+            "Random Application Module"
+        ],
+
+        correct: 0
+    },
+
+
+    {
+        question:
+        "Quelle unité mesure la capacité d'une mémoire informatique ?",
+
+        answers: [
+            "Volt",
+            "Ohm",
+            "Octet",
+            "Ampère"
+        ],
+
+        correct: 2
+    },
+
+
+    {
+        question:
+        "Quel composant exécute principalement les instructions d'un programme ?",
+
+        answers: [
+            "CPU",
+            "Clavier",
+            "Écran",
+            "Souris"
+        ],
+
+        correct: 0
+    },
+
+
+    {
+        question:
+        "Quel composant permet de stocker les données à long terme ?",
+
+        answers: [
+            "RAM",
+            "SSD",
+            "CPU",
+            "Carte réseau"
+        ],
+
+        correct: 1
+    },
+
+
+    // ==============================
+    // MATH
+    // ==============================
+
+    {
+        question:
+        "Combien vaut 2² + 3² ?",
+
+        answers: [
+            "10",
+            "11",
+            "12",
+            "13"
+        ],
+
+        correct: 3
+    },
+
+
+    {
+        question:
+        "Quelle est la dérivée de x² ?",
+
+        answers: [
+            "x",
+            "2x",
+            "x²",
+            "2"
+        ],
+
+        correct: 1
+    },
+
+
+    {
+        question:
+        "Si f(x) = 2x + 3, combien vaut f(2) ?",
+
+        answers: [
+            "5",
+            "6",
+            "7",
+            "8"
+        ],
+
+        correct: 2
+    },
+
+
+    {
+        question:
+        "Quelle est la valeur de √49 ?",
+
+        answers: [
+            "6",
+            "7",
+            "8",
+            "9"
+        ],
+
+        correct: 1
+    },
+
+
+    {
+        question:
+        "Combien vaut 3 × 4 + 2 ?",
+
+        answers: [
+            "14",
+            "20",
+            "18",
+            "12"
+        ],
+
+        correct: 0
+    },
+
+
+    // ==============================
+    // PHYSIQUE
+    // ==============================
+
+    {
+        question:
+        "Quelle est l'unité SI de la force ?",
+
+        answers: [
+            "Joule",
+            "Newton",
+            "Watt",
+            "Volt"
+        ],
+
+        correct: 1
+    },
+
+
+    {
+        question:
+        "Quelle relation permet de calculer la vitesse ?",
+
+        answers: [
+            "v = d × t",
+            "v = d / t",
+            "v = t / d",
+            "v = d + t"
+        ],
+
+        correct: 1
+    },
+
+
+    {
+        question:
+        "Quelle est l'unité de la tension électrique ?",
+
+        answers: [
+            "Ampère",
+            "Ohm",
+            "Volt",
+            "Watt"
+        ],
+
+        correct: 2
+    },
+
+
+    {
+        question:
+        "Quelle est l'unité de la résistance électrique ?",
+
+        answers: [
+            "Volt",
+            "Ohm",
+            "Ampère",
+            "Joule"
+        ],
+
+        correct: 1
+    },
+
+
+    {
+        question:
+        "Quelle grandeur électrique est mesurée en Ampère ?",
+
+        answers: [
+            "Tension",
+            "Résistance",
+            "Intensité du courant",
+            "Puissance"
+        ],
+
+        correct: 2
+    }
+
+];
+
+
+// =================================
+// VARIABLES
+// =================================
+
+let currentQuestion = 0;
+
+let score = 0;
+
+let answered = false;
+
+
+// =================================
+// RANDOMIZE QUESTIONS
+// =================================
+
+function shuffleQuestions() {
+
+    questions.sort(
+        () => Math.random() - 0.5
+    );
+
+}
+
+
+// =================================
+// SHOW QUESTION
+// =================================
+
+function showQuestion() {
+
+    answered = false;
+
+
+    const q =
+        questions[currentQuestion];
+
+
+    document.getElementById(
+        "question"
+    ).textContent =
+        q.question;
+
+
+    document.getElementById(
+        "questionNumber"
+    ).textContent =
+        "Question " +
+        (currentQuestion + 1) +
+        " / " +
+        questions.length;
+
+
+    document.getElementById(
+        "score"
+    ).textContent =
+        "Score: " + score;
+
+
+    document.getElementById(
+        "progress"
+    ).style.width =
+        (
+            currentQuestion /
+            questions.length *
+            100
+        ) + "%";
+
+
+    const answersContainer =
+        document.getElementById(
+            "answers"
+        );
+
+
+    answersContainer.innerHTML = "";
+
+
+    q.answers.forEach(
+        function(answer, index) {
+
+
+            const button =
+                document.createElement(
+                    "button"
+                );
+
+
+            button.className =
+                "answer";
+
+
+            button.textContent =
+                answer;
+
+
+            button.onclick =
+                function() {
+
+                    checkAnswer(
+                        index,
+                        button
+                    );
+
+                };
+
+
+            answersContainer.appendChild(
+                button
+            );
+
+        }
+    );
+
+
+    document.getElementById(
+        "nextButton"
+    ).style.display =
+        "none";
+
+}
+
+
+// =================================
+// CHECK ANSWER
+// =================================
+
+function checkAnswer(
+    selectedIndex,
+    selectedButton
+) {
+
+
+    if (answered) {
+        return;
+    }
+
+
+    answered = true;
+
+
+    const q =
+        questions[currentQuestion];
+
+
+    const buttons =
+        document.querySelectorAll(
+            ".answer"
+        );
+
+
+    buttons.forEach(
+        function(button, index) {
+
+
+            if (
+                index ===
+                q.correct
+            ) {
+
+                button.classList.add(
+                    "correct"
+                );
+
+            }
+
+        }
+    );
+
+
+    if (
+        selectedIndex ===
+        q.correct
+    ) {
+
+        score++;
+
+    } else {
+
+        selectedButton.classList.add(
+            "wrong"
+        );
+
+    }
+
+
+    document.getElementById(
+        "score"
+    ).textContent =
+        "Score: " + score;
+
+
+    document.getElementById(
+        "nextButton"
+    ).style.display =
+        "block";
+
+}
+
+
+// =================================
+// NEXT QUESTION
+// =================================
+
+function nextQuestion() {
+
+    currentQuestion++;
+
+
+    if (
+        currentQuestion >=
+        questions.length
+    ) {
+
+        showResult();
+
+        return;
+
+    }
+
+
+    showQuestion();
+
+}
+
+
+// =================================
+// SHOW RESULT
+// =================================
+
+function showResult() {
+
+
+    document.getElementById(
+        "quiz"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "result"
+    ).style.display =
+        "block";
+
+
+    document.getElementById(
+        "finalScore"
+    ).textContent =
+        "Your score: " +
+        score +
+        " / " +
+        questions.length;
+
+
+    const percentage =
+        (
+            score /
+            questions.length
+        ) * 100;
+
+
+    if (percentage >= 90) {
+
+        document.getElementById(
+            "finalMessage"
+        ).textContent =
+            "🌟 Excellent! You're a 3ème Info star!";
+
+    }
+
+    else if (percentage >= 70) {
+
+        document.getElementById(
+            "finalMessage"
+        ).textContent =
+            "👏 Very good! Keep going!";
+
+    }
+
+    else if (percentage >= 50) {
+
+        document.getElementById(
+            "finalMessage"
+        ).textContent =
+            "💪 Good job! A little more revision!";
+
+    }
+
+    else {
+
+        document.getElementById(
+            "finalMessage"
+        ).textContent =
+            "📚 Keep studying and try again!";
+
+    }
+
+}
+
+
+// =================================
+// RESTART
+// =================================
+
+function restartQuiz() {
+
+
+    currentQuestion = 0;
+
+    score = 0;
+
+
+    shuffleQuestions();
+
+
+    document.getElementById(
+        "quiz"
+    ).style.display =
+        "block";
+
+
+    document.getElementById(
+        "result"
+    ).style.display =
+        "none";
+
+
+    showQuestion();
+
+}
+
+
+// =================================
+// START GAME
+// =================================
+
+shuffleQuestions();
+
+showQuestion();
+
+
+</script>
+
+
+</body>
+
+</html>

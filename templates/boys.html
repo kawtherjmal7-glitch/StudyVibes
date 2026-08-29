@@ -1,0 +1,1065 @@
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Boys Space 💙</title>
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='boys.css') }}">
+
+</head><body class="boys-page"><header><div class="logo">
+    StudyVibe 💙
+</div>
+
+<a href="/" class="back">
+    ← Home
+</a>
+
+</header><main class="space-main"><div class="page-icon">
+    💙
+</div>
+
+<h1>Boys Space</h1>
+
+<p>
+    Learn • Practice • Improve 🚀
+</p>
+
+
+<!-- =========================
+     MAIN SECTIONS
+========================== -->
+
+<div class="section-grid">
+
+    <!-- STUDY SPACE -->
+
+    <div class="study-section"
+         onclick="showStudySpace()">
+
+        📚
+
+        <h2>Study Space</h2>
+
+        <p>
+            Courses, exercises and devoirs.
+        </p>
+
+    </div>
+
+
+    <!-- NOTES -->
+
+    <div class="study-section"
+         onclick="showNotes()">
+
+        📝
+
+        <h2>Notes</h2>
+
+        <p>
+            Write and organize your notes.
+        </p>
+
+    </div>
+
+
+    <!-- STUDY PARTNER -->
+
+    <div class="study-section"
+         onclick="showStudyPartner()">
+
+        🤝
+
+        <h2>Study Partner</h2>
+
+        <p>
+            Find someone to study with.
+        </p>
+
+    </div>
+
+
+    <!-- TIPS -->
+
+    <div class="study-section"
+         onclick="showTips()">
+
+        💡
+
+        <h2>Student Tips</h2>
+
+        <p>
+            Useful tips for studying.
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- =================================================
+     STUDY SPACE
+================================================= -->
+
+<div id="studySpaceBox"
+     style="display:none;">
+
+    <h2>📚 Study Space</h2>
+
+    <p>
+        Choose a subject to start learning 🚀
+    </p>
+
+
+    <div class="section-grid">
+
+        <div class="study-section"
+             onclick="openSubject('programming')">
+
+            💻
+
+            <h2>Programming</h2>
+
+            <p>
+                Algorithmique, variables,
+                conditions et boucles.
+            </p>
+
+        </div>
+
+
+        <div class="study-section"
+             onclick="openSubject('math')">
+
+            ➗
+
+            <h2>Mathématiques</h2>
+
+            <p>
+                Fonctions, suites,
+                probabilités et dérivation.
+            </p>
+
+        </div>
+
+
+        <div class="study-section"
+             onclick="openSubject('physics')">
+
+            ⚡
+
+            <h2>Physique</h2>
+
+            <p>
+                Mouvement, forces,
+                énergie et électricité.
+            </p>
+
+        </div>
+
+
+        <div class="study-section"
+             onclick="openSubject('sti')">
+
+            ⚙️
+
+            <h2>STI</h2>
+
+            <p>
+                Systèmes, réseaux
+                et technologies.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- LESSONS -->
+
+    <div id="lessonArea"
+         style="display:none;">
+
+        <button onclick="backToSubjects()">
+            ← Back to subjects
+        </button>
+
+        <div id="lessonContent"></div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =================================================
+     NOTES
+================================================= -->
+
+<div id="notesBox"
+     style="display:none;">
+
+    <h2>📝 My Notes</h2>
+
+    <p>
+        Write your notes and ideas here.
+    </p>
+
+
+    <div class="partner-create">
+
+        <h3>✏️ New Note</h3>
+
+        <textarea
+            id="noteText"
+            placeholder="Write your note here..."
+            rows="7"
+            style="width:90%; padding:15px;">
+        </textarea>
+
+        <br><br>
+
+        <button onclick="saveNote()">
+            💾 Save Note
+        </button>
+
+    </div>
+
+
+    <div class="partner-posts">
+
+        <h3>📚 Saved Notes</h3>
+
+        <div id="savedNotes"></div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =================================================
+     STUDY PARTNER
+================================================= -->
+
+<div id="studyPartnerBox"
+     style="display:none;">
+
+    <h2>🤝 Study Partner</h2>
+
+    <p>
+        Find someone who studies the same subjects.
+    </p>
+
+
+    <div class="partner-create">
+
+        <h3>➕ Create your post</h3>
+
+        <form
+            action="{{ url_for('create_post') }}"
+            method="POST">
+
+            <input
+                type="text"
+                name="name"
+                placeholder="Your name"
+                required>
+
+            <input
+                type="email"
+                name="email"
+                placeholder="Your email"
+                required>
+
+            <input
+                type="text"
+                name="subject"
+                placeholder="Subject"
+                required>
+
+            <textarea
+                name="message"
+                placeholder="What are you looking for?"
+                required>
+            </textarea>
+
+            <button type="submit">
+                Publish Post 🚀
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <div class="partner-posts">
+
+        <h3>
+            👥 Students looking for partners
+        </h3>
+
+        {% if posts %}
+
+            {% for post in posts %}
+
+            <div class="partner-post">
+
+                <h3>
+                    👤 {{ post["name"] }}
+                </h3>
+
+                <span>
+                    📚 {{ post["subject"] }}
+                </span>
+
+                <p>
+                    {{ post["message"] }}
+                </p>
+
+
+                <form
+                    action="{{ url_for(
+                        'send_request',
+                        post_id=post['id']
+                    ) }}"
+                    method="POST">
+
+                    <input
+                        type="text"
+                        name="sender_name"
+                        placeholder="Your name"
+                        required>
+
+                    <input
+                        type="email"
+                        name="sender_email"
+                        placeholder="Your email"
+                        required>
+
+                    <button type="submit">
+                        📩 Send Request
+                    </button>
+
+                </form>
+
+            </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <p>
+                🌱 No posts yet. Be the first!
+            </p>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+
+
+<!-- =================================================
+     TIPS
+================================================= -->
+
+<div id="tipsBox"
+     style="display:none;">
+
+    <h2>💡 Student Tips</h2>
+
+    <div class="tips-list">
+
+        <div class="tip-card">
+            <div class="tip-icon">⏰</div>
+            <div>
+                <h3>Organize your time</h3>
+                <p>
+                    Make a small planning before starting your study session.
+                </p>
+            </div>
+        </div>
+
+
+        <div class="tip-card">
+            <div class="tip-icon">📱</div>
+            <div>
+                <h3>Avoid distractions</h3>
+                <p>
+                    Put unnecessary notifications away while studying.
+                </p>
+            </div>
+        </div>
+
+
+        <div class="tip-card">
+            <div class="tip-icon">🧠</div>
+            <div>
+                <h3>Understand first</h3>
+                <p>
+                    Try to understand the lesson before memorizing it.
+                </p>
+            </div>
+        </div>
+
+
+        <div class="tip-card">
+            <div class="tip-icon">✏️</div>
+            <div>
+                <h3>Practice</h3>
+                <p>
+                    Exercises help you transform what you learned into real skills.
+                </p>
+            </div>
+        </div>
+
+
+        <div class="tip-card">
+            <div class="tip-icon">🎯</div>
+            <div>
+                <h3>Set a goal</h3>
+                <p>
+                    Decide what you want to finish before starting.
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+</main><script>
+
+/* =================================================
+   HIDE ALL
+================================================= */
+
+function hideAll() {
+
+    document.getElementById("studySpaceBox").style.display = "none";
+
+    document.getElementById("notesBox").style.display = "none";
+
+    document.getElementById("studyPartnerBox").style.display = "none";
+
+    document.getElementById("tipsBox").style.display = "none";
+
+}
+
+
+
+/* =================================================
+   STUDY SPACE
+================================================= */
+
+function showStudySpace() {
+
+    hideAll();
+
+    document.getElementById("studySpaceBox").style.display = "block";
+
+    document.getElementById("lessonArea").style.display = "none";
+
+    document.getElementById("studySpaceBox").scrollIntoView({
+        behavior: "smooth"
+    });
+
+}
+
+
+
+/* =================================================
+   STUDY DATA
+================================================= */
+
+const studyData = {
+
+    programming: {
+
+        title: "💻 Programming",
+
+        lessons: [
+
+            {
+                title: "1. Algorithmique",
+
+                definition:
+                "Un algorithme est une suite ordonnée d'instructions permettant de résoudre un problème.",
+
+                explanation:
+                "Un problème informatique peut être décomposé en plusieurs étapes. On identifie les données, les traitements puis le résultat attendu.",
+
+                example:
+                "Pour calculer la somme de deux nombres : lire A et B, calculer S = A + B puis afficher S.",
+
+                exercise:
+                "Écrire un algorithme qui lit deux nombres et affiche leur somme.",
+
+                devoir:
+                "Créer un algorithme qui lit le prix d'un produit et sa quantité puis calcule le prix total."
+            },
+
+
+            {
+                title: "2. Variables",
+
+                definition:
+                "Une variable permet de stocker une information pendant l'exécution d'un programme.",
+
+                explanation:
+                "Une variable possède un nom et contient une valeur. Cette valeur peut changer pendant le programme.",
+
+                example:
+                "age = 17, moyenne = 15.5, nom = 'Ali'.",
+
+                exercise:
+                "Donner le type adapté pour une moyenne, un nom et un nombre entier.",
+
+                devoir:
+                "Créer plusieurs variables et préciser le type de chacune."
+            },
+
+
+            {
+                title: "3. Conditions",
+
+                definition:
+                "Une condition permet d'exécuter une action seulement lorsqu'une situation est vérifiée.",
+
+                explanation:
+                "Les structures conditionnelles permettent au programme de prendre une décision.",
+
+                example:
+                "Si la moyenne est supérieure ou égale à 10, afficher Admis.",
+
+                exercise:
+                "Écrire une condition permettant de savoir si un nombre est positif.",
+
+                devoir:
+                "Créer un programme qui classe une note selon plusieurs niveaux."
+            },
+
+
+            {
+                title: "4. Boucles",
+
+                definition:
+                "Une boucle permet de répéter des instructions plusieurs fois.",
+
+                explanation:
+                "Les boucles sont utiles lorsqu'une même opération doit être effectuée plusieurs fois.",
+
+                example:
+                "Afficher les nombres de 1 à 10 avec une boucle.",
+
+                exercise:
+                "Afficher les nombres pairs de 2 à 20.",
+
+                devoir:
+                "Calculer la somme des nombres de 1 à 100."
+            }
+
+        ]
+    },
+
+
+    math: {
+
+        title: "➗ Mathématiques",
+
+        lessons: [
+
+            {
+                title: "1. Fonctions",
+
+                definition:
+                "Une fonction associe une valeur de départ à une valeur appelée image.",
+
+                explanation:
+                "On peut calculer l'image d'un nombre et étudier les propriétés de la fonction.",
+
+                example:
+                "Si f(x) = 2x + 1 alors f(3) = 7.",
+
+                exercise:
+                "Calculer f(4) pour f(x) = 3x + 2.",
+
+                devoir:
+                "Étudier une fonction affine et représenter sa courbe."
+            },
+
+
+            {
+                title: "2. Suites",
+
+                definition:
+                "Une suite est une succession de nombres indexés généralement par des entiers.",
+
+                explanation:
+                "Une suite peut être donnée par une formule ou une relation permettant de calculer ses termes.",
+
+                example:
+                "Pour u(n) = 2n + 1 : u(0)=1, u(1)=3 et u(2)=5.",
+
+                exercise:
+                "Calculer les trois premiers termes de u(n)=3n+2.",
+
+                devoir:
+                "Calculer les cinq premiers termes d'une suite donnée."
+            },
+
+
+            {
+                title: "3. Probabilités",
+
+                definition:
+                "Une probabilité mesure la possibilité qu'un événement se produise.",
+
+                explanation:
+                "La probabilité d'un événement est comprise entre 0 et 1.",
+
+                example:
+                "Avec un dé équilibré, la probabilité d'obtenir 6 est 1/6.",
+
+                exercise:
+                "Quelle est la probabilité d'obtenir un nombre pair avec un dé équilibré ?",
+
+                devoir:
+                "Résoudre un problème de probabilités comportant plusieurs événements."
+            }
+
+        ]
+    },
+
+
+    physics: {
+
+        title: "⚡ Physique",
+
+        lessons: [
+
+            {
+                title: "1. Mouvement",
+
+                definition:
+                "Le mouvement décrit le changement de position d'un objet au cours du temps.",
+
+                explanation:
+                "Pour étudier un mouvement, on peut utiliser la position, la distance parcourue et la vitesse.",
+
+                example:
+                "Un objet parcourt 100 m en 20 s. Sa vitesse moyenne est de 5 m/s.",
+
+                exercise:
+                "Un mobile parcourt 50 m en 10 s. Calculer sa vitesse moyenne.",
+
+                devoir:
+                "Étudier le mouvement d'un mobile à partir de plusieurs positions."
+            },
+
+
+            {
+                title: "2. Forces",
+
+                definition:
+                "Une force représente une action exercée sur un objet.",
+
+                explanation:
+                "Une force possède une direction, un sens et une intensité.",
+
+                example:
+                "Un objet posé sur une table est soumis à son poids et à l'action de la table.",
+
+                exercise:
+                "Identifier les forces exercées sur un objet posé sur une table.",
+
+                devoir:
+                "Réaliser plusieurs bilans de forces."
+            },
+
+
+            {
+                title: "3. Énergie cinétique",
+
+                definition:
+                "L'énergie cinétique est l'énergie associée au mouvement d'un objet.",
+
+                explanation:
+                "Elle dépend de la masse de l'objet et de sa vitesse.",
+
+                example:
+                "Ec = 1/2 × m × v².",
+
+                exercise:
+                "Calculer l'énergie cinétique d'un objet de 2 kg se déplaçant à 3 m/s.",
+
+                devoir:
+                "Résoudre plusieurs exercices sur l'énergie cinétique."
+            }
+
+        ]
+    },
+
+
+    sti: {
+
+        title: "⚙️ STI",
+
+        lessons: [
+
+            {
+                title: "1. Système informatique",
+
+                definition:
+                "Un système informatique regroupe du matériel et des logiciels permettant de traiter l'information.",
+
+                explanation:
+                "Le matériel correspond aux éléments physiques. Les logiciels correspondent aux programmes utilisés par l'utilisateur.",
+
+                example:
+                "Le clavier est un matériel tandis qu'un navigateur web est un logiciel.",
+
+                exercise:
+                "Donner trois exemples de matériel et trois exemples de logiciels.",
+
+                devoir:
+                "Présenter les principaux composants d'un système informatique."
+            },
+
+
+            {
+                title: "2. Processeur et mémoire",
+
+                definition:
+                "Le processeur exécute les instructions tandis que la mémoire conserve temporairement les informations utilisées.",
+
+                explanation:
+                "Lorsqu'un programme fonctionne, le processeur traite les instructions et les données nécessaires sont utilisées par la mémoire.",
+
+                example:
+                "Lorsqu'une application est ouverte, elle utilise des ressources du système.",
+
+                exercise:
+                "Expliquer la différence entre processeur et mémoire.",
+
+                devoir:
+                "Faire un tableau comparatif entre processeur, mémoire et stockage."
+            },
+
+
+            {
+                title: "3. Réseaux",
+
+                definition:
+                "Un réseau permet à plusieurs appareils de communiquer entre eux.",
+
+                explanation:
+                "Un réseau peut permettre l'échange d'informations et le partage de certaines ressources.",
+
+                example:
+                "Plusieurs ordinateurs peuvent être connectés au même réseau local.",
+
+                exercise:
+                "Donner deux avantages d'un réseau informatique.",
+
+                devoir:
+                "Dessiner un réseau comprenant trois ordinateurs et un équipement réseau."
+            }
+
+        ]
+    }
+
+};
+
+
+
+/* =================================================
+   OPEN SUBJECT
+================================================= */
+
+function openSubject(subject) {
+
+    document.getElementById("lessonArea").style.display = "block";
+
+    const data = studyData[subject];
+
+    let html = `
+        <h2>${data.title}</h2>
+    `;
+
+
+    data.lessons.forEach(function(lesson) {
+
+        html += `
+
+        <div class="lesson">
+
+            <h2>${lesson.title}</h2>
+
+            <div class="lesson-box definition">
+
+                <h3>📌 Définition</h3>
+
+                <p>
+                    ${lesson.definition}
+                </p>
+
+            </div>
+
+
+            <div class="lesson-box explanation">
+
+                <h3>📖 Explication</h3>
+
+                <p>
+                    ${lesson.explanation}
+                </p>
+
+            </div>
+
+
+            <div class="lesson-box example">
+
+                <h3>💡 Exemple</h3>
+
+                <p>
+                    ${lesson.example}
+                </p>
+
+            </div>
+
+
+            <details>
+
+                <summary>
+                    ✏️ Exercice
+                </summary>
+
+                <div class="lesson-box exercise">
+
+                    <p>
+                        ${lesson.exercise}
+                    </p>
+
+                </div>
+
+            </details>
+
+
+            <details>
+
+                <summary>
+                    📝 Devoir
+                </summary>
+
+                <div class="lesson-box devoir">
+
+                    <p>
+                        ${lesson.devoir}
+                    </p>
+
+                </div>
+
+            </details>
+
+        </div>
+
+        `;
+
+    });
+
+
+    document.getElementById("lessonContent").innerHTML = html;
+
+
+    document.getElementById("lessonArea").scrollIntoView({
+        behavior: "smooth"
+    });
+
+}
+
+
+
+/* =================================================
+   BACK TO SUBJECTS
+================================================= */
+
+function backToSubjects() {
+
+    document.getElementById("lessonArea").style.display = "none";
+
+}
+
+
+
+/* =================================================
+   NOTES
+================================================= */
+
+function showNotes() {
+
+    hideAll();
+
+    document.getElementById("notesBox").style.display = "block";
+
+    loadNotes();
+
+    document.getElementById("notesBox").scrollIntoView({
+        behavior: "smooth"
+    });
+
+}
+
+
+function saveNote() {
+
+    const text =
+        document.getElementById("noteText").value.trim();
+
+    if (text === "") {
+
+        alert("Please write something first ✨");
+
+        return;
+    }
+
+
+    let notes =
+        JSON.parse(
+            localStorage.getItem("boysNotes") || "[]"
+        );
+
+
+    notes.push(text);
+
+
+    localStorage.setItem(
+        "boysNotes",
+        JSON.stringify(notes)
+    );
+
+
+    document.getElementById("noteText").value = "";
+
+    loadNotes();
+
+}
+
+
+function loadNotes() {
+
+    const container =
+        document.getElementById("savedNotes");
+
+    let notes =
+        JSON.parse(
+            localStorage.getItem("boysNotes") || "[]"
+        );
+
+
+    container.innerHTML = "";
+
+
+    if (notes.length === 0) {
+
+        container.innerHTML =
+            "<p>🌱 No notes yet.</p>";
+
+        return;
+    }
+
+
+    notes.forEach(function(note, index) {
+
+        const div =
+            document.createElement("div");
+
+        div.className = "tip-card";
+
+
+        div.innerHTML = `
+
+            <div class="tip-icon">
+                📝
+            </div>
+
+            <div>
+
+                <p>${note}</p>
+
+                <button onclick="deleteNote(${index})">
+                    🗑️ Delete
+                </button>
+
+            </div>
+
+        `;
+
+
+        container.appendChild(div);
+
+    });
+
+}
+
+
+function deleteNote(index) {
+
+    let notes =
+        JSON.parse(
+            localStorage.getItem("boysNotes") || "[]"
+        );
+
+
+    notes.splice(index, 1);
+
+
+    localStorage.setItem(
+        "boysNotes",
+        JSON.stringify(notes)
+    );
+
+
+    loadNotes();
+
+}
+
+
+
+/* =================================================
+   STUDY PARTNER
+================================================= */
+
+function showStudyPartner() {
+
+    hideAll();
+
+    document.getElementById("studyPartnerBox").style.display = "block";
+
+    document.getElementById("studyPartnerBox").scrollIntoView({
+        behavior: "smooth"
+    });
+
+}
+
+
+
+/* =================================================
+   TIPS
+================================================= */
+
+function showTips() {
+
+    hideAll();
+
+    document.getElementById("tipsBox").style.display = "block";
+
+    document.getElementById("tipsBox").scrollIntoView({
+        behavior: "smooth"
+    });
+
+}
+
+</script></body>
+</html>

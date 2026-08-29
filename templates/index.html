@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyVibe ✨</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='index.css') }}">
+</head>
+
+<body class="home-page">
+
+<header>
+    <div class="logo">StudyVibe ✨</div>
+
+    <nav>
+        <a href="/">Home</a>
+        <a href="#about">About</a>
+    </nav>
+</header>
+
+<main>
+
+    <section class="hero">
+
+        <div class="badge">✨ Welcome to your study world</div>
+
+        <h1>
+            Study smarter.<br>
+            <span>Vibe better.</span> 💗
+        </h1>
+
+        <p>
+            Learn • Share • Connect • Have Fun
+        </p>
+
+        <h3>Choose your space</h3>
+
+        <div class="spaces">
+
+            <a href="/girls" class="home-card girls-card">
+                <div class="big-icon">🎀</div>
+
+                <h2>Girls Space</h2>
+
+                <p>
+                    A cute and cozy space<br>
+                    to learn and grow ✨
+                </p>
+
+                <span>Enter →</span>
+            </a>
+
+
+            <a href="/boys" class="home-card boys-card">
+                <div class="big-icon">🖤</div>
+
+                <h2>Boys Space</h2>
+
+                <p>
+                    A dark and mysterious space<br>
+                    to learn and explore 🌙
+                </p>
+
+                <span>Enter →</span>
+            </a>
+            <div class="study-section"
+     onclick="window.location.href='/games'">
+
+    🎮
+
+    <h2>Quiz</h2>
+
+    <p>
+        Test your 3ème Info knowledge!
+    </p>
+
+</div>
+
+        </div>
+
+    </section>
+
+    <section id="about" class="about">
+
+        <h2>More than studying ✨</h2>
+
+        <p>
+            StudyVibe helps students learn,
+            share and enjoy their study journey.
+        </p>
+
+    </section>
+
+</main>
+
+<footer>
+    Made with ♡ for students · © 2026 StudyVibe
+</footer>
+
+</body>
+</html>
